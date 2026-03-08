@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <menuitem
+        id="menu_custom_dashboard_root"
+        name="Dashboard Ejecutivo"
+        sequence="1"
+        web_icon="custom_dashboard,static/description/icon.png"
+    />
+    <menuitem
+        id="menu_custom_dashboard"
+        name="Dashboard"
+        parent="menu_custom_dashboard_root"
+        action="custom_dashboard_action"
+        sequence="1"
+    />
+</odoo>
