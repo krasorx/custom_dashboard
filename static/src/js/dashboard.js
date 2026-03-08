@@ -211,8 +211,9 @@ export class CustomDashboard extends Component {
             this._customerPieInstance.destroy();
         }
 
-        const { labels, values, ids } = this.state.data.billing_by_customer;
-        if (!values.length) return;
+        const bbc = this.state.data.billing_by_customer;
+        if (!bbc || !bbc.values || !bbc.values.length) return;
+        const { labels, values, ids } = bbc;
 
         const COLORS = [
             '#6366f1','#3b82f6','#8b5cf6','#06b6d4','#10b981',

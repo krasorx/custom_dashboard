@@ -193,7 +193,7 @@
                             <i class="fa-solid fa-chart-pie text-purple-400"></i>
                             Facturación por Cliente
                         </h3>
-                        <t t-if="state.data.billing_by_customer.values.length === 0">
+                        <t t-if="!state.data.billing_by_customer or !state.data.billing_by_customer.values or state.data.billing_by_customer.values.length === 0">
                             <div class="flex items-center justify-center h-48 text-gray-300 text-xs">
                                 <div class="text-center">
                                     <i class="fa-solid fa-chart-pie text-4xl mb-2 block"></i>
