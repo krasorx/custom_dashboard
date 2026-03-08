@@ -26,6 +26,7 @@
             'custom_dashboard/static/src/css/dashboard.css',
             'https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js',
             'https://cdn.tailwindcss.com',
+            'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css',
         ],
     },
     'installable': True,
