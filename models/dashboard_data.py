@@ -29,6 +29,7 @@ class CustomDashboard(models.TransientModel):
             'top_products': self._get_top_products(date_from, date_to),
             'sales_chart': self._get_sales_chart_data(date_from, date_to),
             'billing_chart': self._get_billing_chart_data(date_from, date_to),
+            'billing_by_customer': self._get_billing_by_customer(date_from, date_to),
             'date_from': fields.Date.to_string(date_from),
             'date_to': fields.Date.to_string(date_to),
         }
@@ -187,6 +188,44 @@ class CustomDashboard(models.TransientModel):
             values.append(round(r.get('amount_total', 0), 2))
 
         return {'labels': labels, 'values': values}
+
+    def _get_billing_by_customer(self, date_from, date_to):
+        """Facturación agrupada por cliente, top 10 + resto agrupado en 'Otros'."""
+        Invoice = self.env['account.move']
+
+        invoices = Invoice.search([
+            ('move_type', '=', 'out_invoice'),
+            ('state', '=', 'posted'),
+            ('invoice_date', '>=', date_from),
+            ('invoice_date', '<=', date_to),
+        ])
+
+        customer_data = {}
+        for inv in invoices:
+            pid = inv.partner_id.id
+            if pid not in customer_data:
+                customer_data[pid] = {
+                    'id': pid,
+                    'name': inv.partner_id.display_name or 'Sin nombre',
+                    'total': 0.0,
+                }
+            customer_data[pid]['total'] += inv.amount_total
+
+        sorted_customers = sorted(customer_data.values(), key=lambda x: x['total'], reverse=True)
+
+        top = sorted_customers[:10]
+        others = sorted_customers[10:]
+
+        labels = [c['name'] for c in top]
+        values = [round(c['total'], 2) for c in top]
+        ids = [c['id'] for c in top]
+
+        if others:
+            labels.append('Otros')
+            values.append(round(sum(c['total'] for c in others), 2))
+            ids.append(None)
+
+        return {'labels': labels, 'values': values, 'ids': ids}
 
     def _get_billing_chart_data(self, date_from, date_to):
         """Facturación agrupada por mes."""

@@ -17,9 +17,11 @@ export class CustomDashboard extends Component {
         this.dateTo = useRef('dateTo');
         this.salesChartRef = useRef('salesChart');
         this.billingChartRef = useRef('billingChart');
+        this.customerPieRef = useRef('customerPie');
 
         this._salesChartInstance = null;
         this._billingChartInstance = null;
+        this._customerPieInstance = null;
 
         const today = new Date();
         const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -32,6 +34,7 @@ export class CustomDashboard extends Component {
                 top_products: [],
                 sales_chart: { labels: [], values: [] },
                 billing_chart: { labels: [], values: [] },
+                billing_by_customer: { labels: [], values: [], ids: [] },
             },
             dateFrom: this._formatDate(firstDay),
             dateTo: this._formatDate(today),
@@ -93,6 +96,7 @@ export class CustomDashboard extends Component {
     _renderCharts() {
         this._renderSalesChart();
         this._renderBillingChart();
+        this._renderCustomerPie();
     }
 
     _renderSalesChart() {
@@ -194,6 +198,63 @@ export class CustomDashboard extends Component {
                         grid: { display: false },
                         ticks: { font: { size: 11 } },
                     },
+                },
+            },
+        });
+    }
+
+    _renderCustomerPie() {
+        const canvas = this.customerPieRef.el;
+        if (!canvas || !window.Chart) return;
+
+        if (this._customerPieInstance) {
+            this._customerPieInstance.destroy();
+        }
+
+        const { labels, values, ids } = this.state.data.billing_by_customer;
+        if (!values.length) return;
+
+        const COLORS = [
+            '#6366f1','#3b82f6','#8b5cf6','#06b6d4','#10b981',
+            '#f59e0b','#ef4444','#ec4899','#14b8a6','#f97316','#94a3b8',
+        ];
+
+        this._customerPieInstance = new window.Chart(canvas, {
+            type: 'pie',
+            data: {
+                labels,
+                datasets: [{
+                    data: values,
+                    backgroundColor: COLORS.slice(0, labels.length),
+                    borderWidth: 2,
+                    borderColor: '#fff',
+                    hoverOffset: 8,
+                }],
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom',
+                        labels: {
+                            font: { size: 10 },
+                            padding: 8,
+                            boxWidth: 10,
+                            boxHeight: 10,
+                        },
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: (ctx) => ` ${ctx.label}: ${this.formatCurrency(ctx.raw)}`,
+                        },
+                    },
+                },
+                onClick: (evt, elements) => {
+                    if (!elements.length) return;
+                    const idx = elements[0].index;
+                    const customerId = ids[idx];
+                    this.goToCustomerInvoices(customerId);
                 },
             },
         });
@@ -317,6 +378,25 @@ export class CustomDashboard extends Component {
             res_model: 'product.product',
             views: [[false, 'form']],
             res_id: productId,
+        });
+    }
+
+    goToCustomerInvoices(partnerId) {
+        const domain = [
+            ['move_type', '=', 'out_invoice'],
+            ['state', '=', 'posted'],
+            ['invoice_date', '>=', this.state.dateFrom],
+            ['invoice_date', '<=', this.state.dateTo],
+        ];
+        if (partnerId) {
+            domain.push(['partner_id', '=', partnerId]);
+        }
+        this.action.doAction({
+            type: 'ir.actions.act_window',
+            name: partnerId ? 'Facturas del Cliente' : 'Facturas - Otros Clientes',
+            res_model: 'account.move',
+            views: [[false, 'list'], [false, 'form']],
+            domain,
         });
     }
 }
