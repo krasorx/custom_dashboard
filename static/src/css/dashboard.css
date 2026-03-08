@@ -41,11 +41,6 @@
     to { transform: rotate(360deg); }
 }
 
-/* Icono en tarjetas */
-.cd-icon {
-    display: block;
-    line-height: 1;
-}
 
 /* Asegurar que las cards tengan min-height en el grid anidado */
 .cd-dashboard .flex-1 {
