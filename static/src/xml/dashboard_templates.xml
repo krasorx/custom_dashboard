@@ -225,43 +225,48 @@
                         </div>
                     </t>
                     <t t-else="">
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-sm">
-                                <thead>
-                                    <tr class="text-left text-xs text-gray-400 uppercase tracking-wider border-b border-gray-100">
-                                        <th class="pb-2 font-medium">#</th>
-                                        <th class="pb-2 font-medium">Producto</th>
-                                        <th class="pb-2 font-medium text-right">Cantidad</th>
-                                        <th class="pb-2 font-medium text-right">Ingresos</th>
-                                        <th class="pb-2 font-medium">Participación</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <t t-foreach="state.data.top_products" t-as="product" t-key="product.id">
-                                        <tr class="border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors" t-on-click="() => this.goToProduct(product.id)">
-                                            <td class="py-1.5 pr-3">
-                                                <span t-attf-class="inline-flex items-center justify-center w-5 h-5 rounded-full text-xs font-bold #{product_index === 0 ? 'bg-yellow-100 text-yellow-700' : product_index === 1 ? 'bg-gray-100 text-gray-500' : product_index === 2 ? 'bg-orange-100 text-orange-600' : 'bg-gray-50 text-gray-400'}">
-                                                    <t t-esc="product_index + 1"/>
-                                                </span>
-                                            </td>
-                                            <td class="py-1.5">
-                                                <span class="font-medium text-gray-700 hover:text-blue-600 transition-colors text-xs"><t t-esc="product.name"/></span>
-                                            </td>
-                                            <td class="py-1.5 text-right text-gray-600 text-xs"><t t-esc="product.qty"/></td>
-                                            <td class="py-1.5 text-right font-semibold text-gray-800 text-xs"><t t-esc="formatCurrency(product.revenue)"/></td>
-                                            <td class="py-1.5 pl-3" style="width: 140px;">
-                                                <div class="flex items-center gap-2">
-                                                    <div class="flex-1 bg-gray-100 rounded-full h-1.5">
-                                                        <div class="bg-blue-500 h-1.5 rounded-full transition-all" t-att-style="'width: ' + getProductShare(product.revenue) + '%'"></div>
-                                                    </div>
-                                                    <span class="text-xs text-gray-400 w-7 text-right"><t t-esc="getProductShare(product.revenue)"/>%</span>
+                        <table class="w-full text-sm" style="table-layout: fixed;">
+                            <colgroup>
+                                <col style="width: 40px;"/>
+                                <col/>
+                                <col style="width: 110px;"/>
+                                <col style="width: 140px;"/>
+                                <col style="width: 260px;"/>
+                            </colgroup>
+                            <thead>
+                                <tr class="text-left text-xs text-gray-400 uppercase tracking-wider border-b border-gray-100">
+                                    <th class="pb-2 font-medium">#</th>
+                                    <th class="pb-2 font-medium">Producto</th>
+                                    <th class="pb-2 font-medium text-right">Cantidad</th>
+                                    <th class="pb-2 font-medium text-right">Ingresos</th>
+                                    <th class="pb-2 font-medium pl-4">Participación</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <t t-foreach="state.data.top_products" t-as="product" t-key="product.id">
+                                    <tr class="border-b border-gray-50 hover:bg-gray-50 cursor-pointer transition-colors" t-on-click="() => this.goToProduct(product.id)">
+                                        <td class="py-2">
+                                            <span t-attf-class="inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold #{product_index === 0 ? 'bg-yellow-100 text-yellow-700' : product_index === 1 ? 'bg-gray-100 text-gray-500' : product_index === 2 ? 'bg-orange-100 text-orange-600' : 'bg-gray-50 text-gray-400'}">
+                                                <t t-esc="product_index + 1"/>
+                                            </span>
+                                        </td>
+                                        <td class="py-2 pr-4">
+                                            <span class="font-medium text-gray-700 hover:text-blue-600 transition-colors text-sm truncate block"><t t-esc="product.name"/></span>
+                                        </td>
+                                        <td class="py-2 text-right text-gray-600 text-sm"><t t-esc="product.qty"/></td>
+                                        <td class="py-2 text-right font-semibold text-gray-800 text-sm"><t t-esc="formatCurrency(product.revenue)"/></td>
+                                        <td class="py-2 pl-4">
+                                            <div class="flex items-center gap-3">
+                                                <div class="flex-1 bg-gray-100 rounded-full h-2">
+                                                    <div class="bg-blue-500 h-2 rounded-full transition-all" t-att-style="'width: ' + getProductShare(product.revenue) + '%'"></div>
                                                 </div>
-                                            </td>
-                                        </tr>
-                                    </t>
-                                </tbody>
-                            </table>
-                        </div>
+                                                <span class="text-xs text-gray-500 font-medium w-8 text-right shrink-0"><t t-esc="getProductShare(product.revenue)"/>%</span>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </t>
+                            </tbody>
+                        </table>
                     </t>
                 </div>
 
