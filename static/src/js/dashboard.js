@@ -3,7 +3,7 @@
 import { registry } from '@web/core/registry';
 import { useService } from '@web/core/utils/hooks';
 import { rpc } from '@web/core/network/rpc';
-import { Component, onMounted, onWillStart, useRef, useState } from '@odoo/owl';
+import { Component, onMounted, onPatched, onWillStart, useRef, useState } from '@odoo/owl';
 
 
 export class CustomDashboard extends Component {
@@ -47,6 +47,10 @@ export class CustomDashboard extends Component {
         onMounted(() => {
             if (this.dateFrom.el) this.dateFrom.el.value = this.state.dateFrom;
             if (this.dateTo.el) this.dateTo.el.value = this.state.dateTo;
+            this._renderCharts();
+        });
+
+        onPatched(() => {
             this._renderCharts();
         });
     }
@@ -270,7 +274,6 @@ export class CustomDashboard extends Component {
             this.state.dateFrom = from;
             this.state.dateTo = to;
             await this._loadData();
-            this._renderCharts();
         }
     }
 
@@ -282,7 +285,6 @@ export class CustomDashboard extends Component {
         if (this.dateFrom.el) this.dateFrom.el.value = this.state.dateFrom;
         if (this.dateTo.el) this.dateTo.el.value = this.state.dateTo;
         await this._loadData();
-        this._renderCharts();
     }
 
     // ---- Navigation ----
