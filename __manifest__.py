@@ -12,7 +12,8 @@
         - Gráfico de ventas por período
         - Navegación directa a registros al hacer click
     """,
-    'author': 'Custom',
+    'author': 'Espindola Luis',
+    'website':'https://luisesp.cloud/',
     'depends': ['account', 'sale_management', 'stock'],
     'data': [
         'security/ir.model.access.csv',
