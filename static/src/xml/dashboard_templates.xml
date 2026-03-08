@@ -256,11 +256,11 @@
                                         <td class="py-2 text-right text-gray-600 text-sm"><t t-esc="product.qty"/></td>
                                         <td class="py-2 text-right font-semibold text-gray-800 text-sm"><t t-esc="formatCurrency(product.revenue)"/></td>
                                         <td class="py-2 pl-4">
-                                            <div class="flex items-center gap-3">
-                                                <div class="flex-1 bg-gray-100 rounded-full h-2">
-                                                    <div class="bg-blue-500 h-2 rounded-full transition-all" t-att-style="'width: ' + getProductShare(product.revenue) + '%'"></div>
+                                            <div style="display: flex; align-items: center; gap: 10px;">
+                                                <div style="flex: 1; background: #f3f4f6; border-radius: 9999px; height: 8px;">
+                                                    <div style="background: #3b82f6; border-radius: 9999px; height: 8px; transition: width 0.3s ease;" t-att-style="'width: ' + getProductShare(product.revenue) + '%'"></div>
                                                 </div>
-                                                <span class="text-xs text-gray-500 font-medium w-8 text-right shrink-0"><t t-esc="getProductShare(product.revenue)"/>%</span>
+                                                <span style="font-size: 11px; color: #6b7280; font-weight: 500; white-space: nowrap; min-width: 30px; text-align: right;"><t t-esc="getProductShare(product.revenue)"/>%</span>
                                             </div>
                                         </td>
                                     </tr>
