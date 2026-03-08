@@ -9,6 +9,17 @@
 .cd-card {
     animation: cd-fadeInUp 0.3s ease both;
     transition: box-shadow 0.2s ease, transform 0.15s ease;
+    border-radius: 16px !important;
+}
+
+/* Redondeo para paneles de gráficos y tabla */
+.cd-dashboard .cd-panel {
+    border-radius: 16px !important;
+}
+
+/* Redondeo del filtro de fechas */
+.cd-dashboard .cd-filter {
+    border-radius: 16px !important;
 }
 
 /* Hover: resplandor + elevación + negrita en valores */
