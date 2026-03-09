@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Custom Dashboard',
-    'version': '18.0.1.0.0',
+    'version': '18.0.2.0.0',
     'category': 'Extra Tools',
     'summary': 'Dashboard personalizado con métricas de facturación, ventas y productos.',
     'description': """
